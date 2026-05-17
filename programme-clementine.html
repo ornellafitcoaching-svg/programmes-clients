@@ -178,7 +178,16 @@ summary::-webkit-details-marker{display:none}
 .nutri-tip strong{color:var(--nude)}
 
 /* RESPONSIVE */
+/* BOTTOM NAV MOBILE */
+#bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:rgba(20,10,10,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom));}
+#bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;text-decoration:none;color:var(--brown);font-size:0.6rem;letter-spacing:0.04em;text-transform:uppercase;font-family:'DM Sans',sans-serif;padding:4px 2px;transition:color .2s}
+#bottom-nav a span.nav-icon{font-size:1.2rem;line-height:1}
+#bottom-nav a:hover,#bottom-nav a.active{color:var(--accent)}
+#bottom-nav{display:none;flex-direction:row}
+
 @media(max-width:520px){
+  #bottom-nav{display:flex}
+  body{padding-bottom:70px}
   nav{padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top))}
   .nav-links{display:none}
   .ex-header{flex-direction:column;gap:6px}
@@ -198,6 +207,15 @@ summary::-webkit-details-marker{display:none}
 </style>
 </head>
 <body>
+
+<!-- BOTTOM NAV MOBILE -->
+<div id="bottom-nav">
+  <a href="#warmup" class="bnav-link"><span class="nav-icon">🔥</span>Échauff.</a>
+  <a href="#programme" class="bnav-link"><span class="nav-icon">🍑</span>Programme</a>
+  <a href="#nutrition" class="bnav-link"><span class="nav-icon">🥗</span>Nutrition</a>
+  <a href="#hyrox" class="bnav-link"><span class="nav-icon">🏃</span>Hyrox</a>
+  <a href="#glossaire" class="bnav-link"><span class="nav-icon">📖</span>Glossaire</a>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -1492,6 +1510,22 @@ function closeBanner() {
   document.getElementById('ios-banner').style.display = 'none';
   localStorage.setItem(bannerKey, '1');
 }
+
+/* Bottom nav — onglet actif au scroll */
+const bnavLinks = document.querySelectorAll('.bnav-link');
+const bnavSections = ['warmup','programme','nutrition','hyrox','glossaire'];
+function updateBottomNav() {
+  let current = bnavSections[0];
+  bnavSections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 120) current = id;
+  });
+  bnavLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateBottomNav, {passive:true});
+updateBottomNav();
 </script>
 </body>
 </html>
